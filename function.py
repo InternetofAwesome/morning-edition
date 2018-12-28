@@ -15,6 +15,10 @@ length='div[@class="audio-module-controls-wrap"]/div[@class="audio-module-contro
 
 # Main article URL, will be replaced
 article_list_url="https://www.npr.org/programs/morning-edition/2018/12/17/677285137?showDate=2018-12-17"
+# Archive URL for getting links to a given day's programs:
+archive_url='https://www.npr.org/programs/morning-edition/archive'
+
+archive_xpath='//*[@id="episode-list"]/article/h2/a/@href'
 
 def makefeed(eps):
 	fg = FeedGenerator()
@@ -33,30 +37,41 @@ def makefeed(eps):
 		fe.link(href=e['url'])
 	return fg.rss_str(pretty=True)
 
+def get_day_urls():
+	pageContent=requests.get(archive_url)
+	tree = html.fromstring(pageContent.content)
+	days=tree.xpath(archive_xpath)
+
+	day_urls = []
+	for d in days:
+		day_urls.append(d)
+	return day_urls
+
 
 def lambda_handler(event, context):
 
-	# Get the HTML and parse it
-	pageContent=requests.get(article_list_url)
-	tree = html.fromstring(pageContent.content)
-
-	# eps = xd.parse(tree.xpath('//*[@id="story-list"]'))
-	# print eps
-
-	# get a top level part of the entire html tree for the episodes
-	eps = tree.xpath(articles)
-
 	#array to keep article data in
 	article_data = []
+	day_urls = get_day_urls()
+	for d in day_urls:
+		# Get the HTML and parse it
+		pageContent=requests.get(d)
+		tree = html.fromstring(pageContent.content)
 
-	for f in eps:
-		a = {}
-		a['title'] = f.xpath(title)[0].text
-		a['url'] = f.xpath(mp3_url)[0]
-		if('hr1' in a['url']):
-			article_data.insert(0, a)
-		else:
-			article_data.append(a);
+		# eps = xd.parse(tree.xpath('//*[@id="story-list"]'))
+		# print eps
+
+		# get a top level part of the entire html tree for the episodes
+		eps = tree.xpath(articles)
+
+		for f in eps:
+			a = {}
+			a['title'] = f.xpath(title)[0].text
+			a['url'] = f.xpath(mp3_url)[0]
+			if('hr1' in a['url']):
+				article_data.insert(0, a)
+			else:
+				article_data.append(a);
 	feed = makefeed(article_data)
 	# print "**************************************************************************"
 	# print "FEED", feed
