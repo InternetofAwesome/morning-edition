@@ -1,6 +1,7 @@
 #!/bin/bash
 
-pip_packages="lxml"
+pip_packages="lxml \
+feedgen"
 
 mkdir -p package
 cd package 
