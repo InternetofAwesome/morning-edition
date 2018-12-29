@@ -1,4 +1,4 @@
-# NPR Morning Edition Podcast Feed Creator  
+# NPR Morning Edition Podcast Feed Generator  
 
 I wanted a way that didn't depend on legacy API keys to get my morning podcast feed.  
 This tool creates a a feed from scraping NPR's website to create the feed. It's a bit limited, in that it does not go back in time farther than the NPR archive page for ME, but it fulfills my needs.  
