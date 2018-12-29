@@ -3,6 +3,7 @@
 I wanted a way that didn't depend on legacy API keys to get my morning podcast feed.  
 This tool creates a a feed from scraping NPR's website to create the feed. It's a bit limited, in that it does not go back in time farther than the NPR archive page for ME, but it fulfills my needs.  
 _This is intended for personal use. It's not a performant implementation, and will probably run up you AWS bill if you hand out the URL and/or don't enable a pretty low throttling rate. This may be an issue for me, even_  
+_This will also cost you (very little) money. You can use the AWS free plan for a year, and after that, this method will cost you a handful of pennies per year_  
   
 ## Details  
 I created this to be run as an AWS lambda function, which can be used via API gateway. There are scripts in the repo that are designed to be used with the AWS CLI to update the lambda function.  
