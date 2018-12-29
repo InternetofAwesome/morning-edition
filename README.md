@@ -21,7 +21,7 @@ I'll caveat this by saying, I'm by no means an AWS expert. Here's what I did:
 1. This is a long-ish running function. Increase your Lambda timeout to ~10 seconds. For my use case, which is personal, this is fine. 
 1. Create an API gateway function that uses your lambda, and make sure it uses the `GET` method.
 1. Make a mapping template in API gateway for `application/rss+xml`. Delete the others.  
-1. Paste the following into the mapping template, otherwise your API will return the XML enclosed in text, which will break things: `$input.path('$')`  
+1. Paste the following into the mapping template, otherwise your API will return the XML enclosed in quotes, which will break things: `$input.path('$')`  
 1. For the Integration Request portion of API gateway, point it to your Lambda function. In my case, `morning-edition`  
   
 That's probably it... If you have issues, feel free to ask questions, or contribute.
