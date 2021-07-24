@@ -1,11 +1,14 @@
+#!/usr/bin/env python3
+
 import json
-from botocore.vendored import requests
 import lxml
 from lxml import html
 from lxml import etree
 from feedgen.feed import FeedGenerator
 from dateutil import parser
 import pytz
+import datetime
+import requests
 
 # article top level branch
 articles='//*[@id="story-list"]/article[@class="rundown-segment"]/article[@class="bucketwrap resaudio"]/div[@class="audio-module"]'
@@ -15,8 +18,16 @@ title='h4[@class="audio-module-title"]'
 mp3_url='div[@class="audio-module-tools"]/ul[@class="audio-module-more-tools"]/li[@class="audio-tool audio-tool-download"]/a/@href'
 length='div[@class="audio-module-controls-wrap"]/div[@class="audio-module-controls"]/time'
 
+# Get day of week
+dow=datetime.datetime.now(pytz.timezone('US/Pacific')).weekday() 
+
 # Archive URL for getting links to a given day's programs:
-archive_url='https://www.npr.org/programs/morning-edition/archive'
+if(dow == 5): #saturday
+	archive_url='https://www.npr.org/programs/weekend-edition-saturday/archive'
+elif(dow == 6): #sunday
+	archive_url='https://www.npr.org/programs/weekend-edition-sunday/archive'
+else:
+	archive_url='https://www.npr.org/programs/morning-edition/archive'
 
 archive_xpath='h2/a/@href'
 archive_date='//*[@id="episode-list"]/article'
