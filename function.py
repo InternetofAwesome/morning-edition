@@ -37,7 +37,7 @@ def makefeed(eps):
 	fg.title('NPR Morning Edition')
 	fg.author( {'name':'NPR'} )
 	fg.link( href='https://www.npr.org/programs/morning-edition/', rel='alternate' )
-	fg.logo('https://media.npr.org/branding/programs/morning-edition/branding_main-f9f25c3b9130b7ea5eba95da872f93cb2fd36e4f.png')
+	fg.logo('https://cdn.shopify.com/s/files/1/0877/5762/products/Podcast_Stickers_ME_1024x1024.jpg')
 	fg.subtitle('Daily news from NPR')
 	fg.link( href='https://ufr96k0yxe.execute-api.us-east-1.amazonaws.com/prod', rel='self' )
 	fg.language('en')
@@ -56,7 +56,6 @@ def get_day_urls():
 	dates=tree.xpath(archive_date)
 	day_urls = []
 	for d in dates:
-		print(d.xpath('@data-episode-date')[0])
 		obj = {}
 		obj['url'] = d.xpath(archive_xpath)[0]
 		obj['date'] = d.xpath('@data-episode-date')[0]
