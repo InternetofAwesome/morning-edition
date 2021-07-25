@@ -56,6 +56,7 @@ def get_day_urls():
 	dates=tree.xpath(archive_date)
 	day_urls = []
 	for d in dates:
+		print(d.xpath('@data-episode-date')[0])
 		obj = {}
 		obj['url'] = d.xpath(archive_xpath)[0]
 		obj['date'] = d.xpath('@data-episode-date')[0]
@@ -69,6 +70,8 @@ def lambda_handler(event, context):
 	#array to keep article data in
 	article_data = []
 	day_urls = get_day_urls()
+	if(dow == 6 or dow == 5):
+		day_urls = [day_urls[0]]
 	for d in day_urls:
 		# Get the HTML and parse it
 		pageContent=requests.get(d['url'])
