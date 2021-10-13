@@ -54,9 +54,9 @@ def lambda_handler(event, context):
 			a['title'] = e['title']
 			a['url'] = e['audioUrl']
 			if('me_hr' in a['url']):
-				a['date'] = pytz.utc.localize(parser.parse(" 0600"))
+				a['date'] = pytz.utc.localize(parser.parse("06:00"))
 			else:
-				a['date'] = pytz.utc.localize(parser.parse(" 0500"))
+				a['date'] = pytz.utc.localize(parser.parse("05:00"))
 			article_data.append(a);
 	feed = makefeed(article_data)
 
