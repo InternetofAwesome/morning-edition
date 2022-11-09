@@ -1,12 +1,14 @@
 #!/bin/bash
 
-pip_packages="lxml \
-feedgen
-pytz"
+set -ex
 
+# pipreqs --force .
 mkdir -p package
+sudo docker run -v "$PWD":/var/task "lambci/lambda:build-python3.7" /bin/sh -c "pip install -r requirements.txt -t ./package; exit"
+
+
 cd package 
-pip install $pip_packages --target .
+# pip install -r ./requirements.txt  --target .
 zip -r9 ../function.zip .
 cd ..
 zip -g function.zip function.py
