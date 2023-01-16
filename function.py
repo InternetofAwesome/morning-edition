@@ -9,8 +9,10 @@ from dateutil import parser
 import pytz
 import datetime
 import requests
-
-full_show = '/html/body/main/div[2]/section/div[2]/div/div[2]/b/@data-play-all'
+import xmltodict
+#                                                       ** (refer to id=episode-core)
+# full_show = '/html/body/main/div[2]/section/div[2]/div/div[2]/b/@data-play-all'
+full_show = '//*[@id="full-show"]/b/@data-play-all'
 
 # Get day of week
 dow=datetime.datetime.now(pytz.timezone('US/Pacific')).weekday() 
@@ -22,6 +24,7 @@ elif(dow == 6): #sunday
 	archive_url='https://www.npr.org/programs/weekend-edition-sunday'
 else:
 	archive_url='https://www.npr.org/programs/morning-edition'
+	# archive_url='https://www.npr.org/programs/morning-edition/2023/01/13/1148968551/morning-edition-for-january-13-2023?showDate=2023-01-13'
 
 def makefeed(eps):
 	fg = FeedGenerator()
@@ -45,9 +48,15 @@ def lambda_handler(event, context):
 
 	article_data = []
 	pageContent=requests.get(archive_url)
+	# print(pageContent.content)
 	tree = html.fromstring(pageContent.content)
 	eps = tree.xpath(full_show)[0]
+	# print(etree.tostring(eps))
 	eps_json = json.loads(eps)
+	# parsed = xmltodict.parse(etree.tostring(eps))
+	# eps_json = json.loads(json.dumps(parsed))
+
+	print(eps_json)
 
 	for e in eps_json['audioData']:
 			a = {}
